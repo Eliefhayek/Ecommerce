@@ -17,12 +17,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    Route::get('/test',[UserController::class,'test']);
 });
 Route::post('/signup',[UserController::class,'Signup']);
 Route::post('/login',[UserController::class,'Login']);
-Route::middleware('login')->group(function(){
-Route::get('/test',[UserController::class,'test']);
-});
 Route::get('intent',[productController::class,'show']);
 Route::post('pur',[productController::class,'purchase']);

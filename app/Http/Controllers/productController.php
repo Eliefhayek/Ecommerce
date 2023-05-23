@@ -10,23 +10,24 @@ class productController extends Controller
 {
     //
     public function show(){
-    $user=Auth::guard('api')->user();
-    $use=User::find($user->id);
-    $intent=$use->createSetupIntent();
+    /*$user=Auth::guard('api')->user();
+    $use=User::find($user->id);*/
+    $user=Auth::user();
+    $intent=$user->createSetupIntent();
     return response()->json($intent);
     }
     public function purchase(Request $request)
 {
     $user=Auth::guard('api')->user();
-    $use=User::find($user->id);
-    $intent=$use->createSetupIntent();
-    $billing_details= 'elie';
-    $payment_method= $request->payment_method;
-
+    //$use=User::find($user->id);
+    $intent=$user->createSetupIntent();
+    if($user->email_verified_at==null){
+        return response()->json('email not verified');
+    }
     try {
-        $use->createOrGetStripeCustomer();
-        $use->updateDefaultPaymentMethod('pm_card_visa');
-        $use->charge(20* 100,	'pm_card_visa');
+        $user->createOrGetStripeCustomer();
+        $user->updateDefaultPaymentMethod('pm_card_visa');
+        $user->charge(20* 100,'pm_card_visa');
     } catch (\Exception $exception) {
         return response()->json('failed');
     }

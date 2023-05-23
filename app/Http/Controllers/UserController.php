@@ -14,11 +14,12 @@ class UserController extends Controller
 public function Login(Request $request){
             $validedata=$request->validate([
                 'email'=>'required|email',
-                'password'=>'required'
+                'password'=>'required|confirmed'
             ]);
-           $user = User::where('email', $request->email)->first();
+          // $user = User::where('email', $request->email)->first();
             $credentials=$request->only('email','password');
             if(Auth::attempt($credentials)){
+                $user=auth()->user();
                 $token = $user->createToken('Laravel Password Grant Client')->accessToken;
                 return response()->json([
                     'status_code' => 200,
@@ -34,7 +35,7 @@ public function Signup(Request $request){
 
         $validedata=$request->validate([
             'email'=>'required|unique:users,email|email',
-            'password'=>'required',
+            'password'=>'required|confirmed',
             'name'=>'required',
         ]);
             $user=new User();
