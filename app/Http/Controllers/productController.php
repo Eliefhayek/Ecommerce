@@ -10,8 +10,6 @@ class productController extends Controller
 {
     //
     public function show(){
-    /*$user=Auth::guard('api')->user();
-    $use=User::find($user->id);*/
     $user=Auth::user();
     $intent=$user->createSetupIntent();
     return response()->json($intent);
@@ -19,7 +17,6 @@ class productController extends Controller
     public function purchase(Request $request)
 {
     $user=Auth::guard('api')->user();
-    //$use=User::find($user->id);
     $intent=$user->createSetupIntent();
     if($user->email_verified_at==null){
         return response()->json('email not verified');
