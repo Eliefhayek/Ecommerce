@@ -16,7 +16,6 @@ public function Login(Request $request){
                 'email'=>'required|email',
                 'password'=>'required|confirmed'
             ]);
-          // $user = User::where('email', $request->email)->first();
             $credentials=$request->only('email','password');
             if(Auth::attempt($credentials)){
                 $user=auth()->user();
